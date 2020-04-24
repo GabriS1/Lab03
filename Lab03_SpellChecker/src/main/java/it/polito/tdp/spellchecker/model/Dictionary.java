@@ -52,9 +52,8 @@ public class Dictionary {
 		
 	}
 
-	public List<RichWord> spellCheckText(List<String> inputTextList) {
+	public List<RichWord> spellCheckTextLinear(List<String> inputTextList) {
 
-		List<RichWord> l = new LinkedList<RichWord>();
 		List<RichWord> lSbagliate = new LinkedList<RichWord>();
 
 		for (String s : inputTextList) {
@@ -63,17 +62,63 @@ public class Dictionary {
 			if (this.dizionario.contains(s)) {
 				r.setCorretta(true);
 			}
-
-			l.add(r);
+			
+			if(r.isCorretta()) {
+				lSbagliate.add(r);
+			}
 
 		}
 		
-		for(RichWord r: l) {
-			if(r.isCorretta()==false) {
+
+		return lSbagliate;
+	}
+	
+	public List<RichWord> spellCheckTextDichotomic(List<String> inputTextList) {
+		List<RichWord> lSbagliate = new LinkedList<RichWord>();
+		
+		
+		for (String s : inputTextList) {
+			
+			RichWord r = new RichWord(s);
+			/*<0 se s<d/2-1
+			 * =0 se s=d/2-1
+			 * >0 se s>d/2-1
+			 */
+			if(s.compareTo(dizionario.get((dizionario.size()/2)-1))==0) {
+				r.setCorretta(true);
+			}
+			if(s.compareTo(dizionario.get((dizionario.size()/2)-1))<0) {
+				
+				List<String> dizionario1 = new LinkedList<String>();
+				/*for(int i=(dizionario.size()/2)-1; i>=0; i--) {
+					dizionario1.add(dizionario.get(i));
+				}*/
+				dizionario1 = dizionario.subList(0, (dizionario.size()/2)-1);
+				
+				if (dizionario1.contains(s)) {
+					r.setCorretta(true);
+				}
+				
+				
+			}
+			if(s.compareTo(dizionario.get((dizionario.size()/2)-1))>0) {
+				List<String> dizionario1 = new LinkedList<String>();
+				dizionario1 = dizionario.subList((dizionario.size()/2)-1, dizionario.size());
+				
+				if (dizionario1.contains(s)) {
+					r.setCorretta(true);
+				}
+				
+			}
+
+			if(!r.isCorretta()) {
 				lSbagliate.add(r);
 			}
-		}
+			
+			
 
+		}
+		
 		return lSbagliate;
 	}
 

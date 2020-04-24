@@ -84,10 +84,10 @@ public class FXMLController {
 
 		List<RichWord> lSbagliate = new LinkedList<RichWord>();
 
-		lSbagliate = this.d.spellCheckText(lInsert);
+		
+		lSbagliate = this.d.spellCheckTextDichotomic(lInsert);
 		
 		
-			
 		String s1 = "";
 
 		for (RichWord r : lSbagliate) {
@@ -96,8 +96,8 @@ public class FXMLController {
 
 		this.txtResult.setText(s1);
 		this.txtErrors.setText("Il testo contiene: "+lSbagliate.size()+" errori");
-		double d= System.nanoTime();
-		this.txtTime.setText("Spell checked completed in: "+Double.toString(d));
+		long d= System.currentTimeMillis();
+		this.txtTime.setText("Spell checked completed in: "+Long.toString(d));
 
 	}
 
